@@ -2,14 +2,32 @@ import os
 import json
 import re
 
-history_file_path = "chat_history.txt"
-courses_file_path = "courses_history.json"
+# Directory to store session-specific chat and course histories
+history_dir_path = "chat_histories"
+course_history_dir_path = "course_histories"
 
-def save_message_to_text(role: str, content: str):
+# Helper function to get the session-specific chat history file
+def get_history_file_path(session_id: str) -> str:
+    return os.path.join(history_dir_path, f"{session_id}_chat_history.txt")
+
+# Helper function to get the session-specific course history file
+def get_course_history_file_path(session_id: str) -> str:
+    return os.path.join(course_history_dir_path, f"{session_id}_course_history.json")
+
+
+# Session-specific chat history
+def save_message_to_text(session_id: str, role: str, content: str):
+    if not os.path.exists(history_dir_path):
+        os.makedirs(history_dir_path)
+
+    history_file_path = get_history_file_path(session_id)
+
     with open(history_file_path, "a", encoding="utf-8") as file:
         file.write(f"{role}: {content}\n")
 
-def read_chat_history_from_text() -> list:
+def read_chat_history_from_text(session_id: str) -> list:
+    history_file_path = get_history_file_path(session_id)
+
     if not os.path.exists(history_file_path):
         return []
 
@@ -24,18 +42,32 @@ def read_chat_history_from_text() -> list:
         if ": " in line:
             role, content = line.split(": ", 1)
             chat_history.append({"role": role, "content": content.strip()})
-    
+
     return chat_history
 
-def save_course_details(new_course_details: str, llm_response: str):
+def clear_chat_history_for_user(session_id: str):
+    """Clear the chat history for a specific user session."""
+    history_file_path = get_history_file_path(session_id)
+
+    if os.path.exists(history_file_path):
+        os.remove(history_file_path)
+
+
+# Session-specific course history
+def save_course_details(session_id: str, new_course_details: str, llm_response: str):
+    """Save course details for the specific user session."""
+    if not os.path.exists(course_history_dir_path):
+        os.makedirs(course_history_dir_path)
+
+    course_history_file_path = get_course_history_file_path(session_id)
 
     course_history = []
-    if os.path.exists(courses_file_path):
+    if os.path.exists(course_history_file_path):
         try:
-            with open(courses_file_path, "r", encoding="utf-8") as file:
+            with open(course_history_file_path, "r", encoding="utf-8") as file:
                 course_history = json.load(file)
         except json.JSONDecodeError:
-            print("Error: courses_history.json is not valid JSON. Starting with an empty history.")
+            print("Error: course history file is not valid JSON. Starting with an empty history.")
 
     try:
         parsed_data = json.loads(new_course_details)
@@ -61,12 +93,10 @@ def save_course_details(new_course_details: str, llm_response: str):
     for course in new_courses:
         try:
             course_title = course['Course Title'].lower()
-            #print("Comparing:", course_title, "and", llm_response.lower())
             pattern = re.compile(rf"\b{re.escape(course_title)}\b", re.IGNORECASE)
 
             if pattern.search(llm_response.lower()):
-                #print(f"{course_title} is in the response")
-                courses_to_save.append(course) 
+                courses_to_save.append(course)
 
         except KeyError:
             print("Error: 'Course Title' key not found in a course dictionary")
@@ -79,31 +109,40 @@ def save_course_details(new_course_details: str, llm_response: str):
             course_history = course_history[:5]
 
         try:
-            with open(courses_file_path, "w", encoding="utf-8") as file:
+            with open(course_history_file_path, "w", encoding="utf-8") as file:
                 json.dump(course_history, file)
         except Exception as e:
             print(f"Error saving course history to file: {e}")
 
-def read_course_details() -> str:
+
+
+def read_course_details(session_id: str) -> str:
+    """Read course details for the specific user session."""
+    course_history_file_path = get_course_history_file_path(session_id)
+
     course_history = []
 
-    if os.path.exists(courses_file_path):
+    if os.path.exists(course_history_file_path):
         try:
-            with open(courses_file_path, "r", encoding="utf-8") as file:
+            with open(course_history_file_path, "r", encoding="utf-8") as file:
                 course_history = json.load(file)
         except json.JSONDecodeError:
-            print("Error: courses_history.json is not valid JSON. Returning empty history.")
-    
+            print("Error: course history file is not valid JSON. Returning empty history.")
+
     if course_history:
         course_history_str = "\n".join([json.dumps(course) for course in course_history])
     else:
         course_history_str = ""
-    
+
     return course_history_str
 
+
 def clear_chat_history():
-    if os.path.exists(history_file_path):
-        os.remove(history_file_path)
-    if os.path.exists(courses_file_path):
-        os.remove(courses_file_path)
-        
+    """Clear global chat and course history."""
+    if os.path.exists(history_dir_path):
+        for file in os.listdir(history_dir_path):
+            os.remove(os.path.join(history_dir_path, file))
+
+    if os.path.exists(course_history_dir_path):
+        for file in os.listdir(course_history_dir_path):
+            os.remove(os.path.join(course_history_dir_path, file))

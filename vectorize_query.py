@@ -19,15 +19,14 @@ def vectorize_and_store_courses(courses, file_name, faculty_list):
         pickle.dump((embeddings, df), f)
 
 def query_modules(query, similarity_threshold=0.45):
-    
     model = SentenceTransformer('all-MiniLM-L6-v2')
-    
+
     with open('module_embeddings/ai_course_embeddings.pkl', 'rb') as f:
         ai_embeddings, ai_df = pickle.load(f)
-    
+
     with open('module_embeddings/cs_course_embeddings.pkl', 'rb') as f:
         cs_embeddings, cs_df = pickle.load(f)
-    
+
     all_df = pd.concat([ai_df, cs_df], ignore_index=True).drop_duplicates(subset=['Course Code', 'PN Number'])
     
     ai_valid_indices = ai_df.drop_duplicates(subset=['Course Code', 'PN Number']).index
@@ -48,12 +47,11 @@ def query_modules(query, similarity_threshold=0.45):
     valid_indices = [i for i in threshold_indices if i < len(all_df)]
     
     if valid_indices:
-        filtered_df = all_df.iloc[valid_indices]
+        filtered_df = all_df.iloc[valid_indices].copy()
         filtered_similarities = similarities[valid_indices]
-        filtered_df['similarity'] = filtered_similarities
+        filtered_df.loc[:, 'similarity'] = filtered_similarities
         filtered_df = filtered_df.sort_values(by='similarity', ascending=False).reset_index(drop=True)
     else:
-        filtered_df = pd.DataFrame()
+        filtered_df = pd.DataFrame()  # Always return a DataFrame, even if empty
 
     return filtered_df
-

@@ -32,13 +32,17 @@ def get_llm_response(query: str, chat_history: list, courses_details: str) -> li
         #temperature = 0.25
 
     system_prompt = {
-        "role": "system",
-        "content": (
-            "You are a chatbot designed to assist students with questions related to the module catalogues of the AI Engineering and Informatics Master's Programs at the University of Passau. "
-            "Your responses must be concise, correct, and informative enough to the needs of students."
-            "Ensure that your answers are factually correct and directly address the questions asked. Use step-by-step approach to provide accurate information."
-        ),
-    }
+    "role": "system",
+    "content": (
+        "You are a chatbot designed to assist students with questions related to the module catalogues of the AI Engineering and Informatics Master's Programs at the University of Passau. "
+        "Your responses must be concise, polite, correct, and informative, addressing the needs of students. "
+        "If the user greets you (e.g., 'hi', 'hello'), respond politely with a greeting and ask how you can assist them today. "
+        "If the user thanks you or expresses gratitude, acknowledge it politely and offer further assistance if needed. "
+        "If users ask questions unrelated to your main tasks, kindly let them know that you are not able to assist with that but can help with module catalog-related questions. "
+        "Ensure that your answers are factually correct and directly address the questions asked. Use a step-by-step approach to provide accurate information."
+    ),
+}
+
     messages = []
     messages.append(system_prompt)
 
@@ -48,7 +52,7 @@ def get_llm_response(query: str, chat_history: list, courses_details: str) -> li
     messages.append({"role": "user", "content": user_prompt})
 
     payload = {
-        "model": "gpt-3.5-turbo",
+        "model": "gpt-4-turbo",
         "messages": messages,
         "temperature": temperature,
         "max_tokens": 1500,

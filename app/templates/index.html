@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniPassau Chat Assistant</title>
+    <title>Uni-Passau Assistant</title>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,6 +17,7 @@
             height: 100vh;
             position: relative;
         }
+
         .main-container {
             width: 100%;
             max-width: 800px;
@@ -28,11 +30,13 @@
             height: 90vh;
             z-index: 1; /* Ensure the chatbot stays on top */
         }
+
         .chat-container {
             display: flex;
             flex-direction: column;
             height: 100%;
         }
+
         .chat-header {
             background-color: #0056b3;
             color: white;
@@ -41,6 +45,7 @@
             font-size: 18px;
             position: relative;
         }
+
         .chat-box {
             flex: 1;
             overflow-y: auto; /* Enable vertical scrolling */
@@ -49,33 +54,48 @@
             display: flex;
             flex-direction: column;
         }
+
         .message {
             margin-bottom: 15px;
             display: flex;
-            align-items: flex-start;
         }
+
+        .message.user {
+            justify-content: flex-end; /* Align user messages to the right */
+        }
+
+        .message.assistant {
+            justify-content: flex-start; /* Align assistant messages to the left */
+        }
+
         .message p {
             margin: 0;
             padding: 10px 15px;
             border-radius: 10px;
             max-width: 70%;
         }
+
         .message.user p {
             background-color: #cce5ff;
             color: #0056b3;
             align-self: flex-end;
+            text-align: right; /* Text will be right-aligned within the message */
         }
+
         .message.assistant p {
             background-color: #e2e3e5;
             color: #555;
             align-self: flex-start;
+            text-align: left; /* Text will be left-aligned within the message */
         }
+
         .chat-input {
             display: flex;
             border-top: 1px solid #ddd;
             padding: 10px;
             background: #fff;
         }
+
         .chat-input input {
             flex: 1;
             padding: 10px;
@@ -83,6 +103,7 @@
             border-radius: 20px;
             outline: none;
         }
+
         .chat-input button {
             padding: 10px 15px;
             margin-left: 10px;
@@ -92,9 +113,11 @@
             border-radius: 20px;
             cursor: pointer;
         }
+
         .chat-input button:hover {
             background-color: #004095;
         }
+
         .clear-button {
             position: absolute;
             right: 10px;
@@ -106,9 +129,11 @@
             padding: 5px 10px;
             cursor: pointer;
         }
+
         .clear-button:hover {
             background-color: #c82333;
         }
+
         .courses-results {
             margin: 20px;
             padding: 10px;
@@ -117,6 +142,7 @@
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             overflow-x: auto;
         }
+
         .courses-results h3 {
             margin-top: 0;
             color: #0056b3;
@@ -148,10 +174,48 @@
             padding-left: 160px;
             padding-right: 160px;
         }
+
+        /* Media queries for mobile responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .main-container {
+                width: 100vw;
+                height: 100vh;
+                max-width: none;
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .left-ad, .right-ad {
+                display: none;
+            }
+
+            .chat-box {
+                padding: 10px;
+            }
+
+            .courses-results {
+                margin: 10px;
+                padding: 10px;
+            }
+
+            /* Ads will be placed below the chat for mobile */
+            .mobile-ad {
+                width: 100%;
+                height: auto;
+                display: block;
+                margin: 10px 0;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Left Ad Container -->
+    <!-- Left Ad Container (Hidden on mobile) -->
     <div class="left-ad">
         <!-- Google AdSense Code for Left Ad -->
         <ins class="adsbygoogle"
@@ -169,7 +233,7 @@
     <div class="main-container">
         <div class="chat-container">
             <div class="chat-header">
-                Chat Assistant
+                Uni-Passau Assistant
                 <form action="/clear" method="post" style="display:inline;">
                     <button type="submit" class="clear-button">Clear</button>
                 </form>
@@ -186,15 +250,23 @@
                 <button type="submit">Send</button>
             </form>
         </div>
-        {% if query %}
-        <div class="courses-results">
-            <h3>Similar Courses:</h3>
-            <div>{{ courses_results | safe }}</div>
+
+        <!-- Mobile Ad Container (Visible only on mobile) -->
+        <div class="mobile-ad">
+            <!-- Google AdSense Code for Mobile Ad -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-6911582138376980"
+                data-ad-slot="5633967685"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
-        {% endif %}
     </div>
 
-    <!-- Right Ad Container -->
+    <!-- Right Ad Container (Hidden on mobile) -->
     <div class="right-ad">
         <!-- Google AdSense Code for Right Ad -->
         <ins class="adsbygoogle"
