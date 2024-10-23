@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Assistant</title>
+    <style>
+        /* Your existing CSS here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .main-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .chat-header {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            position: relative;
+        }
+        .chat-box {
+            flex: 1;
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding: 15px;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .message p {
+            margin: 0;
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 70%;
+        }
+        .message.user p {
+            background-color: #cce5ff;
+            color: #0056b3;
+            align-self: flex-end;
+        }
+        .message.assistant p {
+            background-color: #e2e3e5;
+            color: #555;
+            align-self: flex-start;
+        }
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #ddd;
+            padding: 10px;
+            background: #fff;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+        .chat-input button {
+            padding: 10px 15px;
+            margin-left: 10px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .chat-input button:hover {
+            background-color: #004095;
+        }
+        .clear-button {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .clear-button:hover {
+            background-color: #c82333;
+        }
+        .courses-results {
+            margin: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+        .courses-results h3 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="chat-container">
+            <div class="chat-header">
+                Chat Assistant
+                <form action="/clear" method="post" style="display:inline;">
+                    <button type="submit" class="clear-button">Clear</button>
+                </form>
+            </div>
+            <div class="chat-box" id="chat-box">
+                {% for message in chat_history %}
+                    <div class="message {{ message.role }}">
+                        <p>{{ message.content }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <form action="/query" method="post" class="chat-input">
+                <input type="text" id="query" name="query" placeholder="Type your message..." required>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+        {% if query %}
+        <div class="courses-results">
+            <h3>Similar Courses:</h3>
+            <div>{{ courses_results | safe }}</div>
+        </div>
+        {% endif %}
+    </div>
+    <script>
+        function scrollToBottom() {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Scroll to bottom on page load
+        window.onload = scrollToBottom;
+
+        const chatBox = document.getElementById('chat-box');
+        const observer = new MutationObserver(scrollToBottom);
+        observer.observe(chatBox, { childList: true });
+
+        scrollToBottom();
+    </script>
+</body>
+</html>

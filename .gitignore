@@ -1,0 +1,4 @@
+.env
+__pycache__
+chat_history.txt
+courses_history.json
