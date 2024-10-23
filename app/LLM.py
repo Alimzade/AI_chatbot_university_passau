@@ -48,7 +48,7 @@ def get_llm_response(query: str, chat_history: list, courses_details: str) -> li
     messages.append({"role": "user", "content": user_prompt})
 
     payload = {
-        "model": "Mixtral-8x7B-Instruct-v0.1",
+        "model": "gpt-3.5-turbo",
         "messages": messages,
         "temperature": temperature,
         "max_tokens": 1500,
@@ -62,5 +62,6 @@ def get_llm_response(query: str, chat_history: list, courses_details: str) -> li
         .get("choices")[0]
         .get("message")
         .get("content")
-        .replace("\n", "<br>")
+        .replace("\n", "<br>")  # Handle line breaks
+        .replace("\*\*(.*?)\*\*", r"<strong>\1</strong>")
     )

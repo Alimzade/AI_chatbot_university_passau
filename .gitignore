@@ -1,4 +1,5 @@
 .env
 __pycache__
+app/__pycache__
 chat_history.txt
 courses_history.json

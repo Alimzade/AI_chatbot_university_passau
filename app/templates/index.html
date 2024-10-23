@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Assistant</title>
+    <title>UniPassau Chat Assistant</title>
     <style>
-        /* Your existing CSS here */
         body {
             font-family: Arial, sans-serif;
             background-color: #eef2f7;
@@ -15,6 +14,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            position: relative;
         }
         .main-container {
             width: 100%;
@@ -26,6 +26,7 @@
             display: flex;
             flex-direction: column;
             height: 90vh;
+            z-index: 1; /* Ensure the chatbot stays on top */
         }
         .chat-container {
             display: flex;
@@ -120,9 +121,51 @@
             margin-top: 0;
             color: #0056b3;
         }
+
+        /* Left and right ad containers */
+        .left-ad, .right-ad {
+            position: absolute;
+            top: 0;
+            width: 160px; /* Standard ad size */
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .left-ad {
+            left: 0;
+        }
+
+        .right-ad {
+            right: 0;
+        }
+
+        /* Ensure the body leaves space for the ads */
+        body {
+            padding-left: 160px;
+            padding-right: 160px;
+        }
     </style>
 </head>
 <body>
+    <!-- Left Ad Container -->
+    <div class="left-ad">
+        <!-- Google AdSense Code for Left Ad -->
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-6911582138376980"
+            data-ad-slot="5633967685"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <!-- Main Chatbot Container -->
     <div class="main-container">
         <div class="chat-container">
             <div class="chat-header">
@@ -150,7 +193,26 @@
         </div>
         {% endif %}
     </div>
+
+    <!-- Right Ad Container -->
+    <div class="right-ad">
+        <!-- Google AdSense Code for Right Ad -->
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-6911582138376980"
+            data-ad-slot="7918545784"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
     <script>
+        document.querySelectorAll('.message.assistant p').forEach(function(message) {
+            message.innerHTML = message.innerHTML.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        });
+        
         function scrollToBottom() {
             const chatBox = document.getElementById('chat-box');
             chatBox.scrollTop = chatBox.scrollHeight;

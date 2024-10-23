@@ -19,6 +19,7 @@ def vectorize_and_store_courses(courses, file_name, faculty_list):
         pickle.dump((embeddings, df), f)
 
 def query_modules(query, similarity_threshold=0.45):
+    
     model = SentenceTransformer('all-MiniLM-L6-v2')
     
     with open('module_embeddings/ai_course_embeddings.pkl', 'rb') as f:
@@ -32,9 +33,11 @@ def query_modules(query, similarity_threshold=0.45):
     ai_valid_indices = ai_df.drop_duplicates(subset=['Course Code', 'PN Number']).index
     cs_valid_indices = cs_df.drop_duplicates(subset=['Course Code', 'PN Number']).index
 
-    all_embeddings = torch.cat([ai_embeddings[ai_valid_indices], cs_embeddings[cs_valid_indices]], dim=0)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    query_embedding = model.encode(query, convert_to_tensor=True)
+    all_embeddings = torch.cat([ai_embeddings[ai_valid_indices], cs_embeddings[cs_valid_indices]], dim=0).to(device)
+
+    query_embedding = model.encode(query, convert_to_tensor=True).to(device)
     
     # Calculating cosine similarities between the query and all embeddings
     similarities = util.pytorch_cos_sim(query_embedding, all_embeddings).cpu().numpy().flatten()
