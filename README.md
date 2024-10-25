@@ -5,6 +5,7 @@ This AI assistant helps students of the University of Passau by answering questi
 ## Features
 
 * Answers questions about teaching modules
+* Vectorized using Sentence Transformer model
 * Conversational capabilities (not just querying)
 * Potential for expansion with more content and use cases
 
