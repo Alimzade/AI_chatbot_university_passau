@@ -6,6 +6,7 @@ This AI assistant helps students of the University of Passau by answering questi
 
 * Answers questions about teaching modules
 * Vectorized using Sentence Transformer model
+* LLM of your choice: OpenAI, Mistral AI etc.
 * Conversational capabilities (not just querying)
 * Potential for expansion with more content and use cases
 
@@ -14,4 +15,5 @@ This AI assistant helps students of the University of Passau by answering questi
 To run the UniPassau Assistant UI, execute the following command in your terminal:
 
 ```bash
+pip install requirements.txt
 python -m uvicorn app.app:app --reload 
