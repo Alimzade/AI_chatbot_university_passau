@@ -1,14 +1,13 @@
--f https://download.pytorch.org/whl/cpu/torch_stable.html
-pandas==1.5.3
-numpy==1.26.2
-scikit-learn==1.3.0
-# pdfplumber==0.11.4
-sentence-transformers==3.0.1
-transformers==4.44.2
-torch==2.5.1
-accelerate==0.34.0
-uvicorn==0.30.6
-fastapi==0.112.2
+pandas==2.2.3  # Latest stable version compatible with Python 3.12 and has precompiled wheels
+numpy==1.26.4  # Compatible version available for Python 3.12
+scikit-learn==1.5.2  # Known to have precompiled wheels and compatibility
+pdfplumber==0.11.4
+sentence-transformers==3.1.1  # Newer stable version with precompiled wheels
+transformers==4.38.0  # Ensures compatibility with torch
+torch==2.4.1  # Compatible with precompiled wheels for Python 3.12
+accelerate==0.21.0
+uvicorn==0.22.0
+fastapi==0.95.2
 python-dotenv==1.0.0
 python-multipart==0.0.9
 itsdangerous==2.1.2

@@ -39,7 +39,7 @@ def main():
         save_to_csv(cs_courses_final.to_dict(orient='records'), 'module_csvs/cs_courses.csv')
 
         query = "Advanced design and analysis techniques"
-        results = query_modules(query, similarity_threshold=0.5)
+        results = query_modules(query, similarity_threshold=0.45)
         print(results)
 
     except Exception as e:
