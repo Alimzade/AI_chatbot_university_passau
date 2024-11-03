@@ -1,4 +1,0 @@
-user: hi
-assistant: Hello! How can I assist you today with the AI Engineering and Informatics Master's Programs at the University of Passau?
-user: intro to ai professor?
-assistant: The lecturer for the course "Introduction to AI Engineering" at the University of Passau is Lemmerich. If you have any more questions or need further details about the module, feel free to ask!
