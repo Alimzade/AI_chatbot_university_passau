@@ -19,7 +19,7 @@ This AI assistant helps students of the University of Passau by answering questi
 
 ## Running the Project
 
-To run the UniPassau Assistant UI, execute the following commands in your terminal:
+To run the University Chat UI, execute the following commands in your terminal:
 
 ```bash
 pip install requirements.txt
