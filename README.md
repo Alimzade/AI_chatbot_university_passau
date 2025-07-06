@@ -15,7 +15,7 @@ This AI assistant helps students of the University of Passau by answering questi
 * pandas, scikit-learn
 * pdfplumber
 * transformers, sentence-transformers
-* ucivorn, fastapi
+* uvicorn, fastapi
 
 ## Running the Project
 
