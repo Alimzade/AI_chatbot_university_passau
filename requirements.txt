@@ -2,7 +2,7 @@ pandas==2.2.3
 scikit-learn==1.5.2
 pdfplumber==0.11.4
 sentence-transformers==3.0.1
-transformers==4.53.0
+transformers==5.0.0rc3
 accelerate==0.34.0
 python-dotenv==0.19.0
 itsdangerous==2.2.0
